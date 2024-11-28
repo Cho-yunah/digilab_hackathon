@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <div>Not Found</div>,
+    element: <div>Page Not Found</div>,
   },
 ]);
 
