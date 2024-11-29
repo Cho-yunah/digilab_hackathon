@@ -24,7 +24,8 @@
       "@config/*": ["config/*"],
       "@hooks/*": ["hooks/*"],
       "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

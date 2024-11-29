@@ -134,6 +134,7 @@ button:focus-visible {
   @apply flex flex-col h-screen w-full bg-white;
   max-width: 448px;
   min-width: 348px;
+  width: 100vw;
   border: 1px solid #ddd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
