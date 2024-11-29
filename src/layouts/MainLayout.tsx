@@ -1,14 +1,11 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
   return (
-    <div>
-      <header>Main Header</header>
+    <div className="relative layout-container">
       <main>
         <Outlet />
       </main>
-      <footer>Main Footer</footer>
     </div>
   );
 };
