@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import { useDrag } from '@use-gesture/react';
 import './BottomSheet.css'; // 스타일은 아래에 추가
 import Selector from '../select/Select';
-import { SearchResultCard, SearchResultCardList, Site } from '../searchBar/SearchResultCard';
+import { SearchResultCard, SearchResultCardList } from '../searchBar/SearchResultCard';
 import { LocationsContext } from '@/services/context';
 import { useNavigate } from 'react-router-dom';
 

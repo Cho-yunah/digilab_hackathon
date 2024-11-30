@@ -1,4 +1,3 @@
-import React from 'react';
 import StaticHeader from '@/components/headers/StaticHeader';
 
 const FacilityInfoPage = () => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import location from '@/assets/svg/location.svg';
 import flag from '@/assets/svg/flag_white.svg';

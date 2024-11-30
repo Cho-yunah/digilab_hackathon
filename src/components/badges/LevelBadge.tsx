@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const LevelbadgeString: { [key: string]: string } = {
   difficult: '접근 어려움',
   normal: '접근 보통',

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import signal_easy from '@/assets/img/signal_easy.png';
 import signal_diff from '@/assets/img/signal_diff.png';

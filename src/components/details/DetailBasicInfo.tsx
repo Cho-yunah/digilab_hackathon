@@ -1,4 +1,3 @@
-import React from 'react';
 import review_img from '@/assets/img/review_img.png';
 
 const DetailBasicInfo = ({ state }: any) => {
