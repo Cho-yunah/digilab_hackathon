@@ -13,15 +13,12 @@ export function createApi(base: string, options?: { headers: RequestOption['head
       method: method.toUpperCase(),
       headers: { ...baseHeaders, ...headers },
       body,
-      mode: 'no-cors',
     });
     
-    console.log(resp.status);
-    // if (!resp.ok) {
-    //   console.log(resp.ok)
-    //   console.error(await resp.text());
-    //   throw Error('network error');
-    // }
+    if (!resp.ok) {
+      console.error(await resp.text());
+      throw Error('network error');
+    }
     return resp;
   }
   

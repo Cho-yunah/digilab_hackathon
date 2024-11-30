@@ -16,7 +16,7 @@ export const SearchResultCard = ({ data, onClick }: { data: Site, onClick(d: Sit
       </div>
       <div className="flex items-baseline w-full">
         <p className="text-lg font-semibold m-1 text-black">{data.title}</p>
-        <p className="text-sm text-[#7C7C7F] font-bold m-1">{(data.distance ?? 0) * 1000} m</p>
+        <p className="text-sm text-[#7C7C7F] font-bold m-1">{(data.distance ?? 0)}m</p>
       </div>
     </div>
   );

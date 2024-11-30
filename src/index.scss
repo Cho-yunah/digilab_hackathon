@@ -1,5 +1,6 @@
 @use './styles/reset';
 @use './styles/variables';
+@use './styles/fonts';
 
 @tailwind base;
 @tailwind components;
@@ -45,9 +46,9 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  // border-color: #7a28ff;
-}
+// button:hover {
+//   // border-color: #7a28ff;
+// }
 // button:focus,
 // button:focus-visible {
 //   outline: 4px auto -webkit-focus-ring-color;

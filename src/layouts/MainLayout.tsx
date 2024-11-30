@@ -1,6 +1,7 @@
+import { getFootWalkingRoutes, getWheelchairRoutes } from '@/internal/repositories/api/OrsRepository';
 import { getLocations } from '@/internal/repositories/dummy/ApiDummyRepository';
 import { LocationsContext } from '@/services/context';
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 type HeaderStatus = 'map' | 'search' | 'route' | 'detail';
@@ -23,6 +24,12 @@ async function loadCurrentGeoLocation(): Promise<GeolocationPosition> {
   });
 }
 
+const getDuration = (duration: number) => {
+  const min = Math.round(duration / 60);
+  if (min < 1) return '1분 미만';
+  return `${min}분`;
+};
+
 const MainLayout = () => {
   const [locations, setLocations] = useState<any[]>([]);
   const [sites, setSites] = useState<any[]>([]);
@@ -30,9 +37,23 @@ const MainLayout = () => {
   const [routePoints, setRoutePoints] = useState<[any, any]>([null, null]);
   const [headerStatus, setHeaderStatus] = useState<HeaderStatus>('map');
   const [markers, setMarkers] = useState<any[]>([]);
-  const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates>();
+  const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates | null>(null);
+  const [searchText, setSearchText] = useState<string>('');
   const [routes, setRoutes] = useState<any[]>([]);
   const [isRouteSearchMode, setIsRouteSearchMode] = useState(false);
+  const search = useCallback(async (q: any) => {
+    console.log(currentPosition, q);
+    const nq = { lat: currentPosition?.latitude, lng: currentPosition?.longitude, ...query, ...q}
+    const data = await getLocations({ lat: nq.lat, lon: nq.lng, title: nq.title, category: nq.category, userType: nq.userType });
+    setSites(data);
+    setHeaderStatus('search');
+    setQuery(nq);
+  }, [query, currentPosition]);
+  const loadCurrentData = useCallback((coords: any) => {
+    getLocations({ lat: `${coords.lat}`, lon: `${coords.lng}`, radius: '1000' }).then((data) => {
+      setLocations(data);
+    });
+  }, []);
   const setCurrentToDestination = useCallback(async (destination: any) => {
     const geo = await loadCurrentGeoLocation();
     setCurrentPosition(geo.coords);
@@ -45,12 +66,65 @@ const MainLayout = () => {
       },
       destination,
     ]);
-    setHeaderStatus('route');
   }, []);
+  const findRoute = useCallback(async (locData: any) => {
+    
+    let start = routePoints[0];
+    if (!start) {
+      const geo = await loadCurrentGeoLocation();
+      start = {
+        title: '현재 위치',
+        address: '',
+        lat: geo.coords.latitude,
+        lng: geo.coords.longitude,
+      }
+    }
+    const end = routePoints[1] || locData;
+    setRoutePoints([start, end]);
+    if (start && end) {
+      Promise.all([
+        getWheelchairRoutes(
+          `${start.lng},${start.lat}`,
+          `${end.lng},${end.lat}`
+        ),
+        getFootWalkingRoutes(
+          `${start.lng},${start.lat}`,
+          `${end.lng},${end.lat}`
+        ),
+      ]).then(([wheelchair, walking]: [any, any]) => {
+        setRoutes([
+          {
+            name: '느린걸음',
+            duration: `${getDuration(Math.round(walking.summary.duration))}`,
+            distance: `${Math.round(walking.summary.distance)}m`,
+            hint: '노약자, 임산부 등',
+            coords: walking.coords,
+          },
+          {
+            name: '휠체어',
+            duration: `${getDuration(Math.round(wheelchair.summary.duration))}`,
+            distance: `${Math.round(wheelchair.summary.distance)}m`,
+            hint: '수동 휠체어',
+            coords: wheelchair.coords,
+          },
+          {
+            name: '목발',
+            duration: `${getDuration(Math.round(walking.summary.duration))}`,
+            distance: `${Math.round(walking.summary.distance)}m`,
+            hint: '목발 사용자',
+            coords: walking.coords,
+          },
+        ]);
+      });
+    }
+    setHeaderStatus('route');
+  }, [setCurrentToDestination]);
+  
+
   useLayoutEffect(() => {
     loadCurrentGeoLocation().then((pos) => {
       setCurrentPosition(pos.coords);
-      getLocations({ lat: `${pos.coords.latitude}`, lon: `${pos.coords.longitude}`, radius: '10' }).then((data) => {
+      getLocations({ lat: `${pos.coords.latitude}`, lon: `${pos.coords.longitude}`, radius: '1000' }).then((data) => {
         setLocations(data);
         setSites(data.slice(0, 10));
       });
@@ -63,6 +137,8 @@ const MainLayout = () => {
         setLocations,
         markers,
         setMarkers,
+        searchText,
+        setSearchText,
         query,
         setQuery,
         routePoints,
@@ -78,6 +154,9 @@ const MainLayout = () => {
         setRoutes,
         isRouteSearchMode,
         setIsRouteSearchMode,
+        findRoute,
+        loadCurrentData,
+        search,
       }}
     >
       <div className="relative layout-container">

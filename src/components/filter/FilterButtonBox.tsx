@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import IconButton from './IconButton'; // 단일 버튼 컴포넌트
 import { FilterType, getFilterIcon } from './filterTypes'; // 필터 타입
+import { LocationsContext } from '@/services/context';
 
 const FilterButtonBox: React.FC = () => {
+  const { search } = useContext(LocationsContext);
   const [selectedFilter, setSelectedFilter] = useState<FilterType | null>(null);
 
   const handleFilterClick = (filter: FilterType) => {

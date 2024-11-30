@@ -1,6 +1,5 @@
 import { parse } from 'csv/browser/esm/sync';
 import Distance from '@turf/distance';
-import { platform } from 'os';
 
 type Param = {
   category?: string;
@@ -12,16 +11,19 @@ type Param = {
 };
 
 export const getLocations = async (p: Param) => {
-  const res = await fetch('/data.csv', {});
+  const res = await fetch('/data.csv', {
+    cache: 'force-cache',
+  });
   const data = await res.blob();
   const csv: any[] = parse(await data.text(), { columns: true });
   let result = csv.slice();
   if (p.lat && p.lon && p.radius) {
-    result = result.filter((item) =>
-      Distance(
-        { type: 'Point', coordinates: [Number(p.lat), Number(p.lon)] },
-        { type: 'Point', coordinates: [Number(item.lat), Number(item.lon)] }
-      ) <= Number(p.radius || 0)
+    result = result.filter(
+      (item) =>
+        Distance(
+          { type: 'Point', coordinates: [Number(p.lat), Number(p.lon)] },
+          { type: 'Point', coordinates: [Number(item.lat), Number(item.lon)] }
+        ) <= Number(p.radius || 0)
     );
   }
 
@@ -30,12 +32,28 @@ export const getLocations = async (p: Param) => {
   }
 
   if (p.category) {
-    result = result.filter((item) => p.category?.includes(item.cat))
+    result = result.filter((item) => p.category?.includes(item.cat));
   }
 
   if (p.userType) {
-    result = result.filter((item) => p.userType?.includes(item.userType))
+    result = result.filter((item) => p.userType?.includes(item.userType));
   }
+  console.log('load locations with ', p);
 
-  return result;
+  return result
+    .map((f) => {
+      const distance = p.lat && p.lon
+      ? Math.round(
+          Distance(
+            { type: 'Point', coordinates: [Number(p.lat), Number(p.lon)] },
+            { type: 'Point', coordinates: [Number(f.lat), Number(f.lon)] }
+          )
+        )
+      : 0;
+      return ({
+        ...f,
+        distance,
+      })
+    })
+    .sort((a, b) => a.distance - b.distance);
 };
