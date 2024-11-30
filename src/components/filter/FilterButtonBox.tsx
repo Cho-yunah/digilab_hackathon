@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import FilterButton from './FilterButton'; // 단일 버튼 컴포넌트
-import { FilterType } from './filterTypes'; // 필터 타입
+import IconButton from './IconButton'; // 단일 버튼 컴포넌트
+import { FilterType, getFilterIcon } from './filterTypes'; // 필터 타입
 
 const FilterButtonBox: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<FilterType | null>(null);
@@ -12,7 +12,13 @@ const FilterButtonBox: React.FC = () => {
   return (
     <div className="flex flex-wrap absolute top-[5rem] mx-[1.2rem]">
       {Object.values(FilterType).map((filter) => (
-        <FilterButton key={filter} filter={filter} isSelected={selectedFilter === filter} onClick={handleFilterClick} />
+        <IconButton
+          key={filter}
+          filter={filter}
+          isSelected={selectedFilter === filter}
+          onClick={handleFilterClick}
+          getIcon={getFilterIcon}
+        />
       ))}
     </div>
   );

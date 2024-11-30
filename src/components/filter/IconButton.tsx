@@ -1,13 +1,14 @@
 import React from 'react';
-import { FilterType, getIcon } from './filterTypes';
+import { CategoryType, FilterType } from './filterTypes';
 
-interface FilterButtonProps {
-  filter: FilterType; // 버튼에 해당하는 필터 타입
+interface IconButtonProps {
+  filter: FilterType | CategoryType; // 버튼에 해당하는 필터 타입
   isSelected: boolean; // 선택 상태 여부
-  onClick: (filter: FilterType) => void; // 클릭 이벤트 핸들러
+  onClick: (filter: any) => void; // 클릭 이벤트 핸들러
+  getIcon: any; // 필터 타입 배열
 }
 
-const FilterButton: React.FC<FilterButtonProps> = ({ filter, isSelected, onClick }) => {
+const IconButton: React.FC<IconButtonProps> = ({ filter, isSelected, onClick, getIcon }) => {
   return (
     <button
       onClick={() => onClick(filter)}
@@ -28,4 +29,4 @@ const FilterButton: React.FC<FilterButtonProps> = ({ filter, isSelected, onClick
   );
 };
 
-export default FilterButton;
+export default IconButton;
