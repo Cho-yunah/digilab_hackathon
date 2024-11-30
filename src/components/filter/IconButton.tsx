@@ -1,29 +1,28 @@
 import React from 'react';
-import { CategoryType, FilterType } from './filterTypes';
+import { CategoryType, FilterType, IconState } from './filterTypes';
 
 interface IconButtonProps {
-  filter: FilterType | CategoryType; // 버튼에 해당하는 필터 타입
-  isSelected: boolean; // 선택 상태 여부
-  onClick: (filter: any) => void; // 클릭 이벤트 핸들러
-  getIcon: any; // 필터 타입 배열
+  filter: CategoryType | FilterType;
+  isSelected: boolean;
+  onClick: (filter: any) => void;
+  getIcon: (filter: any, state: IconState) => string;
 }
 
 const IconButton: React.FC<IconButtonProps> = ({ filter, isSelected, onClick, getIcon }) => {
+  const iconSrc = getIcon(filter, isSelected ? IconState.ACTIVE : IconState.DEFAULT);
+
   return (
     <button
       onClick={() => onClick(filter)}
-      className="flex items-center p-2 m-1 border-none rounded-full cursor-pointer shadow-lg text-[14px] "
+      className="flex items-center p-2 m-1 rounded-full cursor-pointer text-[14px] shadow-md"
       style={{
-        backgroundColor: isSelected ? '#7a28ff' : '#fff',
-        color: isSelected ? '#fff' : '#000',
+        backgroundColor: isSelected ? '#F6F2FF' : '#fff',
+        border: isSelected ? '1px solid #7A28FF' : '1px solid #cdcdcd',
+        color: isSelected ? '#7A28FF' : '#000',
         gap: '8px',
       }}
     >
-      <img
-        src={getIcon(filter)} // 아이콘 가져오기
-        alt={`${filter} 아이콘`}
-        style={{ width: '24px', height: '24px' }}
-      />
+      <img src={iconSrc} alt={`${filter} 아이콘`} className="w-6 h-6" />
       <span>{filter}</span>
     </button>
   );

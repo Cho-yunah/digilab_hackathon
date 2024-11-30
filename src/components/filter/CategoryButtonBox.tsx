@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import IconButton from './IconButton'; // 단일 버튼 컴포넌트
-import { CategoryType, FilterType, getCategoryIcon } from './filterTypes'; // 필터 타입
+import { CategoryType, getCategoryIcon } from './filterTypes'; // 필터 타입
 
 const CategoryButtonBox: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
