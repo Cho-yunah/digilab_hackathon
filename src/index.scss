@@ -145,6 +145,12 @@ button:focus-visible {
 .bg-main {
   background-color: #7a28ff;
 }
+.border-main {
+  border-color: #7a28ff;
+}
+.text-main {
+  color: #7a28ff;
+}
 
 @layer base {
   * {
