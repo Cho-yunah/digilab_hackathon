@@ -12,9 +12,6 @@ import degree_high from '@/assets/svg/degree_high.svg';
 import degree_low from '@/assets/svg/degree_low.svg';
 import degree_mid from '@/assets/svg/degree_middle.svg';
 
-const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
-  const { setCurrentToDestination, setRoutePoints, setHeaderStatus } = useContext(LocationsContext);
-  const navigate = useNavigate();
 
 interface IconBoxProps {
   degree: string;
@@ -55,7 +52,8 @@ const IconBox = ({ degree, parking, bathroom, elevator, table }: IconBoxProps) =
 };
 
 const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
-  const { setRoutePoints, setHeaderStatus, findRoute, } = useContext(LocationsContext);
+  const { setCurrentToDestination, setRoutePoints, setHeaderStatus,findRoute } = useContext(LocationsContext);
+  const navigate = useNavigate();
   if (!data) return <></>;
   console.log(data);
 

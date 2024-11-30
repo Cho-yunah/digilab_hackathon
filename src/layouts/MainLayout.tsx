@@ -126,7 +126,6 @@ const MainLayout = () => {
       setCurrentPosition(pos.coords);
       getLocations({ lat: `${pos.coords.latitude}`, lon: `${pos.coords.longitude}`, radius: '1000' }).then((data) => {
         setLocations(data);
-        setSites(data.slice(0, 10));
       });
     });
   }, []);

@@ -47,7 +47,7 @@ export const getLocations = async (p: Param) => {
           Distance(
             { type: 'Point', coordinates: [Number(p.lat), Number(p.lon)] },
             { type: 'Point', coordinates: [Number(f.lat), Number(f.lon)] }
-          )
+          ) * 1000
         )
       : 0;
       return ({

@@ -199,7 +199,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
       setCurrentLoc(null);
     });
     naver.maps.Event.addListener(map, 'rightclick', function (e: any) {
-      console.log('지도 우클릭:', e.coord.x, e.coosrd.y, e.overlay);
+      console.log('지도 우클릭:', e.coord.x, e.coord.y, e.overlay);
       const marker = new Marker({
         map,
         position: e.coord,
