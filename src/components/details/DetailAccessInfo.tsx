@@ -1,6 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DetailAccessInfo = () => {
+  const navigate = useNavigate();
+  const facilityButtonHandler = () => {
+    navigate('/:id/facility');
+  };
+
   return (
     <>
       <div className="p-4">
@@ -28,7 +34,10 @@ const DetailAccessInfo = () => {
               <p>장애인 화장실</p>
             </div>
           </div>
-          <button className="w-full bg-white rounded-xl mt-4 p-2 border-[#7c7c7f]">{`편의시설 ${'5'}개 더보기 ❯`}</button>
+          <button
+            className="w-full bg-white rounded-xl mt-4 p-2 border-[#7c7c7f]"
+            onClick={facilityButtonHandler}
+          >{`편의시설 ${'5'}개 더보기 ❯`}</button>
         </div>
       </div>
       <div className="bg-[#F2F2F2] w-full h-[8px] " />
