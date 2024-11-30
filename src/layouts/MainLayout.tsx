@@ -33,6 +33,7 @@ const MainLayout = () => {
   const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates>();
   const [searchText, setSearchText] = useState<string>('');
   const [routes, setRoutes] = useState<any[]>([]);
+  const [isRouteSearchMode, setIsRouteSearchMode] = useState(false);
   const setCurrentToDestination = useCallback(async (destination: any) => {
     const geo = await loadCurrentGeoLocation();
     setCurrentPosition(geo.coords);
@@ -78,6 +79,8 @@ const MainLayout = () => {
         setCurrentPosition,
         routes,
         setRoutes,
+        isRouteSearchMode,
+        setIsRouteSearchMode,
       }}
     >
       <div className="relative layout-container">

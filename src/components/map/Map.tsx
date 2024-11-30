@@ -8,6 +8,7 @@ import { LocationsContext } from '@/services/context';
 import { MapHeader } from './MapHeader';
 import InfoCard from '../infoCard/InfoCard';
 import { cn } from '@/lib/utils';
+import { SearchList } from '../searchBar/SearchList';
 
 declare global {
   interface Window {
@@ -39,11 +40,11 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   // 경로 탐색 지점 선택
   const [routePoints, setRoutePoints] = useState<[any, any]>([null, null]);
 
-  const { locations, setMarkers } = useContext(LocationsContext);
+  const { locations, setMarkers, headerStatus, isRouteSearchMode } = useContext(LocationsContext);
 
   const showCard = (loc: any) => {
     setCurrentLoc(loc);
-  }
+  };
 
   useLayoutEffect(() => {
     const script = document.createElement('script');
@@ -124,7 +125,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
         Event.addListener(m, 'click', function (e) {
           map.setCenter(e.coord);
           showCard(loc);
-        })
+        });
         return m;
       });
       console.log(newMarkers);
@@ -153,7 +154,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
     });
     naver.maps.Event.addListener(map, 'dragend', function (e) {
       setCurrentLoc(null);
-    })
+    });
     naver.maps.Event.addListener(map, 'rightclick', function (e: any) {
       console.log('지도 우클릭:', e.coord.x, e.coosrd.y, e.overlay);
       const marker = new Marker({
@@ -174,18 +175,22 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
     });
   }, [map]);
 
-
   return (
     <div className="relative">
       <div id="map" style={{ width: '100%', height: '100vh', overflow: 'hidden', borderRadius: '10px' }} />
+      {isRouteSearchMode && (
+        <div className="absolute w-full h-screen top-0 left-0 pt-[108px] z-[1000] bg-white">
+          <div className="relative h-full">
+            <SearchList />
+          </div>
+        </div>
+      )}
       <MapHeader />
-      <div>
-        {/* 플로팅 액션 버튼 */}
-      </div>
+      <div>{/* 플로팅 액션 버튼 */}</div>
       <BottomSheet />
 
-      <div className={cn('absolute bottom-0 left-0 w-full p-4', {'hidden': !currentLoc})}>
-        <InfoCard data={currentLoc} onClose={() => setCurrentLoc(null)}  />
+      <div className={cn('absolute bottom-0 left-0 w-full p-4', { hidden: !currentLoc })}>
+        <InfoCard data={currentLoc} onClose={() => setCurrentLoc(null)} />
       </div>
       <div className="absolute bottom-0 left-0 w-full p-4 overflow-x-auto">
         <RecommendationRouteList

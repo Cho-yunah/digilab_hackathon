@@ -10,18 +10,20 @@ export function MapHeader() {
   return (
     <>
       {headerStatus === 'map' && (
-        <div className="absolute my-1 p-3 top-0 left-0 w-full">
+
+        <div className="absolute my-1 p-3 top-0 left-0 w-full z-[2000]">
           <SearchBar />
           <CategoryButtonBox />
         </div>
       )}
       {headerStatus === 'search' && (
-        <div className="absolute top-0 left-0 w-full">
-          <StaticHeader title={searchText} />
+
+        <div className="absolute top-0 left-0 w-full z-[2000]">
+            <StaticHeader title={searchText} />
         </div>
       )}
       {headerStatus === 'route' && (
-        <div className="absolute top-0 left-0 w-full">
+        <div className="absolute top-0 left-0 w-full z-[2000]">
           <SearchRoute start={routePoints[0]} end={routePoints[1]} />
         </div>
       )}
