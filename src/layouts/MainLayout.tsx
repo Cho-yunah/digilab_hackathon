@@ -31,6 +31,7 @@ const MainLayout = () => {
   const [headerStatus, setHeaderStatus] = useState<HeaderStatus>('map');
   const [markers, setMarkers] = useState<any[]>([]);
   const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates>();
+  const [searchText, setSearchText] = useState<string>('');
   const [routes, setRoutes] = useState<any[]>([]);
   const setCurrentToDestination = useCallback(async (destination: any) => {
     const geo = await loadCurrentGeoLocation();
@@ -62,6 +63,8 @@ const MainLayout = () => {
         setLocations,
         markers,
         setMarkers,
+        searchText,
+        setSearchText,
         query,
         setQuery,
         routePoints,
