@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import Map from '@/components/map/Map';
-import SearchBar from '@/components/searchBar/SearchBar';
-import FilterButtonBox from '@/components/filter/FilterButtonBox';
+import { useState } from 'react';
+import {Map} from '@/components/map/Map';
 
 const HomePage = () => {
   const [drawerHeight, setDrawerHeight] = useState('0%');
@@ -10,8 +8,6 @@ const HomePage = () => {
   return (
     <div className="relative">
       <Map />
-      <SearchBar />
-      <FilterButtonBox />
       <button onClick={openDrawer}>Open Drawer</button>
     </div>
   );
