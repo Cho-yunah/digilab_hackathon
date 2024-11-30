@@ -1,6 +1,8 @@
 import shoesIcon from '@/assets/svg/shoes.svg';
 import wheelchairIcon from '@/assets/svg/wheelchair.svg';
 import { cn } from '@/lib/utils';
+import { LocationsContext } from '@/services/context';
+import { useContext, useState } from 'react';
 
 type Route = {
   name: '느린걸음' | '휠체어' | '목발';
@@ -24,11 +26,19 @@ const getDuration = (duration: number) => {
   if (min < 1) return '1분 미만';
   return `${min}분`;
 };
-const RecommendationRoute = ({ route, isActive }: { route: Route; isActive: boolean }) => {
+const RecommendationRoute = ({ route, isActive, onClick }: { route: Route; isActive: boolean; onClick(): void }) => {
   return (
-    <div className={cn("bg-white rounded-lg p-4 drop-shadow-lg cursor-pointer select-none border border-solid border-1", isActive ? 'border-primary' : '')}>
+    <div
+      className={cn(
+        'bg-white rounded-lg p-4 drop-shadow-lg cursor-pointer select-none border border-solid border-1 aspect-[140/115]',
+        {
+          'border-primary': isActive,
+        }
+      )}
+      onClick={() => onClick()}
+    >
       <div className="flex justify-between">
-        <div className={cn("text-sm", isActive ? 'text-primary' : '')}>
+        <div className={cn('text-sm', isActive ? 'text-primary' : '')}>
           <span>{route.name}</span>
         </div>
         <div>
@@ -54,10 +64,18 @@ const RecommendationRoute = ({ route, isActive }: { route: Route; isActive: bool
 };
 
 export const RecommendationRouteList = ({ routes }: { routes: Route[] }) => {
+  const [current, setCurrent] = useState(0);
+  const { headerStatus } = useContext(LocationsContext);
+  if (headerStatus !== 'route' || routes.length < 1) return <div></div>;
   return (
     <div className="grid gap-4 grid-cols-3 w-max">
       {routes.map((route, idx) => (
-        <RecommendationRoute route={route} key={JSON.stringify(route)} isActive={idx === 0} />
+        <RecommendationRoute
+          route={route}
+          key={JSON.stringify(route)}
+          isActive={idx === current}
+          onClick={() => setCurrent(idx)}
+        />
       ))}
     </div>
   );

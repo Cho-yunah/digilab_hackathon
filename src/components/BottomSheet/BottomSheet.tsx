@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useSpring, animated } from 'react-spring';
 import { useDrag } from '@use-gesture/react';
 import './BottomSheet.css'; // 스타일은 아래에 추가
+import Selector from '../select/Select';
+import { SearchResultCard, SearchResultCardList, Site } from '../searchBar/SearchResultCard';
+import { LocationsContext } from '@/services/context';
 
-const minY = 300;
+const minY = 0;
 
 interface BottomSheetProps {
   initialHeight?: number; // 초기 높이
@@ -12,6 +15,7 @@ interface BottomSheetProps {
 
 const BottomSheet: React.FC<BottomSheetProps> = () => {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const { sites, headerStatus } = useContext(LocationsContext);
 
   const [style, api] = useSpring(() => ({
     height: minY,
@@ -23,16 +27,27 @@ const BottomSheet: React.FC<BottomSheetProps> = () => {
     api.start({ height: position });
   };
 
-  const bind = useDrag(({ delta: [,dy], down }) => {
+  const bind = useDrag(({ delta: [, dy], down }) => {
     const rect = sheetRef.current?.getBoundingClientRect();
     api.start({ height: (rect?.height || minY) - dy, immediate: down });
   });
 
+  useEffect(() => {
+    if (headerStatus !== 'search') {
+      moveTo(0);
+      return;
+    }
+    moveTo(window.innerHeight * 0.7);
+  }, [headerStatus, sites]);
+
   return (
     <animated.div
       ref={sheetRef}
-      className="bottom-sheet min-h-[300px]"
+      className="bottom-sheet"
       style={{
+        minWidth: '348px',
+        maxWidth: '448px',
+        margin: '0 auto',
         height: style.height.to((h) => h),
       }}
     >
@@ -40,15 +55,25 @@ const BottomSheet: React.FC<BottomSheetProps> = () => {
         <div className="handler" />
       </div>
       <div className="bottom-sheet-content">
-        <p>여기에 원하는 내용을 추가하세요. 내용이 길어지면 스크롤됩니다.</p>
-        <p>스크롤 가능한 콘텐츠</p>
-        <p>더 많은 콘텐츠...</p>
+        <Selector />
+        <SearchResultCardList>
+          {sites.map((site: any) => (
+            <SearchResultCard
+              key={JSON.stringify(site)}
+              data={site}
+              onClick={() => {
+                alert('페이지 이동');
+              }}
+            />
+          ))}
+          {sites.length < 1 && (
+            <div>
+              <span>검색 결과가 없습니다.</span>
+            </div>
+          )}
+        </SearchResultCardList>
       </div>
-      <div className="bottom-sheet-footer">
-        <button onClick={() => moveTo(100)}>최소화</button>
-        <button onClick={() => moveTo(300)}>중간</button>
-        <button onClick={() => moveTo(500)}>최대화</button>
-      </div>
+      <div className="bottom-sheet-footer"></div>
     </animated.div>
   );
 };

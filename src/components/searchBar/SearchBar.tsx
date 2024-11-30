@@ -5,7 +5,7 @@ const SearchBar = () => {
     <div className="w-full flex">
       <div className="w-full h-[40px] p-2 shadow-md rounded-full bg-white flex">
         <img src={logo} className="mx-2" />
-        <input className="w-full mx-1" />
+        <input className="w-full mx-1 bg-white" />
       </div>
     </div>
   );
