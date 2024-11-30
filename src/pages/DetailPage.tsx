@@ -12,7 +12,7 @@ const DetailPage = () => {
       <DetailIntroInfo state={state} />
       <DetailAccessInfo state={state} />
       <DetailBasicInfo state={state} />
-      <DetailReservationBtn state={state} />
+      <DetailReservationBtn />
     </div>
   );
 };

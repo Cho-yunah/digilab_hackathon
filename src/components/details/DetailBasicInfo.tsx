@@ -1,4 +1,5 @@
 import React from 'react';
+import review_img from '@/assets/img/review_img.png';
 
 const DetailBasicInfo = ({ state }: any) => {
   const { address, schedule, phone } = state;
@@ -23,6 +24,10 @@ const DetailBasicInfo = ({ state }: any) => {
             </a>
           </div>
         </div>
+      </div>
+      <div className="bg-[#F2F2F2] w-full h-[8px] " />
+      <div className="p-3">
+        <img src={review_img} alt="review image" />
       </div>
     </>
   );
