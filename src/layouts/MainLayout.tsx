@@ -37,10 +37,18 @@ const MainLayout = () => {
   const [routePoints, setRoutePoints] = useState<[any, any]>([null, null]);
   const [headerStatus, setHeaderStatus] = useState<HeaderStatus>('map');
   const [markers, setMarkers] = useState<any[]>([]);
-  const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates>();
+  const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates | null>(null);
   const [searchText, setSearchText] = useState<string>('');
   const [routes, setRoutes] = useState<any[]>([]);
   const [isRouteSearchMode, setIsRouteSearchMode] = useState(false);
+  const search = useCallback(async (q: any) => {
+    console.log(currentPosition, q);
+    const nq = { lat: currentPosition?.latitude, lng: currentPosition?.longitude, ...query, ...q}
+    const data = await getLocations({ lat: nq.lat, lon: nq.lng, title: nq.title, category: nq.category, userType: nq.userType });
+    setSites(data);
+    setHeaderStatus('search');
+    setQuery(nq);
+  }, [query, currentPosition]);
   const loadCurrentData = useCallback((coords: any) => {
     getLocations({ lat: `${coords.lat}`, lon: `${coords.lng}`, radius: '1000' }).then((data) => {
       setLocations(data);
@@ -148,6 +156,7 @@ const MainLayout = () => {
         setIsRouteSearchMode,
         findRoute,
         loadCurrentData,
+        search,
       }}
     >
       <div className="relative layout-container">

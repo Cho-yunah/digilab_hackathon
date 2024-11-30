@@ -195,7 +195,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
       console.log('지도 클릭:', e.coord, e.overlay);
     });
     naver.maps.Event.addListener(map, 'dragend', function (e: any) {
-      loadCurrentData(e.coord);
+      // loadCurrentData(e.coord);
       setCurrentLoc(null);
     });
     naver.maps.Event.addListener(map, 'rightclick', function (e: any) {
