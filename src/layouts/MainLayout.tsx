@@ -1,6 +1,6 @@
 import { getLocations } from '@/internal/repositories/dummy/ApiDummyRepository';
 import { LocationsContext } from '@/services/context';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 type HeaderStatus = 'map' | 'search' | 'route' | 'detail';
@@ -47,13 +47,13 @@ const MainLayout = () => {
     ]);
     setHeaderStatus('route');
   }, []);
-  useEffect(() => {
-    getLocations().then((data) => {
-      setLocations(data);
-      setSites(data.slice(0, 10));
-    });
+  useLayoutEffect(() => {
     loadCurrentGeoLocation().then((pos) => {
       setCurrentPosition(pos.coords);
+      getLocations({ lat: `${pos.coords.latitude}`, lon: `${pos.coords.longitude}`, radius: '10' }).then((data) => {
+        setLocations(data);
+        setSites(data.slice(0, 10));
+      });
     });
   }, []);
   return (

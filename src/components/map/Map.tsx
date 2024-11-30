@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import markerIcon from '@/assets/svg/marker.svg';
+import pinDifficultIcon from '@/assets/svg/pin_difficult.svg';
+import pinEasyIcon from '@/assets/svg/pin_easy.svg';
+import pinNormalIcon from '@/assets/svg/pin_normal.svg';
 import { getOrsDummy } from '../../internal/repositories/dummy/RouteRepository';
 import { RecommendationRouteList } from '../searchBar/RecommendationRouteList';
 import { getWheelchairRoutes } from '@/internal/repositories/api/OrsRepository';
@@ -9,6 +12,12 @@ import { MapHeader } from './MapHeader';
 import InfoCard from '../infoCard/InfoCard';
 import { cn } from '@/lib/utils';
 import { SearchList } from '../searchBar/SearchList';
+
+const PIN = {
+  '상': pinDifficultIcon,
+  '중': pinNormalIcon,
+  '하': pinEasyIcon,
+}
 
 declare global {
   interface Window {
@@ -40,7 +49,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   // 경로 탐색 지점 선택
   const [routePoints, setRoutePoints] = useState<[any, any]>([null, null]);
 
-  const { locations, setMarkers, headerStatus, isRouteSearchMode } = useContext(LocationsContext);
+  const { locations, setMarkers, isRouteSearchMode } = useContext(LocationsContext);
 
   const showCard = (loc: any) => {
     setCurrentLoc(loc);
@@ -115,11 +124,11 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   useEffect(() => {
     if (map && locations.length > 0) {
       const { Marker, Size, Event } = naver.maps;
-      const newMarkers = locations.slice(0, 10).map((loc: any) => {
+      const newMarkers = locations.map((loc: any) => {
         const m = new Marker({
           map,
           position: new naver.maps.LatLng(loc.lat, loc.lon),
-          icon: { url: markerIcon, size: new Size(28, 28), scaledSize: new Size(28, 28) },
+          icon: { url: PIN[loc['접근성'] as '하'], size: new Size(56, 56), scaledSize: new Size(56, 56) },
           title: loc.title,
         });
         Event.addListener(m, 'click', function (e) {
@@ -128,7 +137,6 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
         });
         return m;
       });
-      console.log(newMarkers);
       setMarkers((prev: any[]) => {
         prev.forEach((p: any) => p.setMap(null));
         return newMarkers;
@@ -152,7 +160,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
     naver.maps.Event.addListener(map, 'click', function (e: any) {
       console.log('지도 클릭:', e.coord, e.overlay);
     });
-    naver.maps.Event.addListener(map, 'dragend', function (e) {
+    naver.maps.Event.addListener(map, 'dragend', function () {
       setCurrentLoc(null);
     });
     naver.maps.Event.addListener(map, 'rightclick', function (e: any) {
