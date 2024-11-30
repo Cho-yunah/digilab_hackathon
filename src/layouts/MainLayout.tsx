@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 const MainLayout = () => {
   return (
     <div className="relative layout-container">
-      <main>
+      <main className="overflow-auto">
         <Outlet />
       </main>
     </div>

@@ -5,7 +5,7 @@ const DetailAccessInfo = () => {
     <>
       <div className="p-4">
         <h2 className="text-lg font-semibold">접근성 정보</h2>
-        <div className="flex items-center bg-stone-100 p-2 rounded-xl">
+        <div className="flex items-center bg-stone-100 p-2 my-3 rounded-2xl">
           <div className="flex flex-col p-3 text-center">
             <img src="https://via.placeholder.com/60" alt="info-card" />
             <p className="font-semibold text-lg text-red-500">보통</p>

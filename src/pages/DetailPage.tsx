@@ -1,4 +1,5 @@
 import DetailAccessInfo from '@/components/details/DetailAccessInfo';
+import DetailBasicInfo from '@/components/details/DetailbasicInfo';
 import DetailIntroInfo from '@/components/details/DetailIntroInfo';
 
 const DetailPage = () => {
@@ -6,6 +7,7 @@ const DetailPage = () => {
     <div>
       <DetailIntroInfo />
       <DetailAccessInfo />
+      <DetailBasicInfo />
     </div>
   );
 };
