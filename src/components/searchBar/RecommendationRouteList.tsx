@@ -9,6 +9,7 @@ type Route = {
   duration: number;
   distance: string;
   hint: string;
+  coords: any[];
 };
 
 const getIcon = (name: Route['name']) => {
@@ -21,24 +22,19 @@ const getIcon = (name: Route['name']) => {
   return shoesIcon;
 };
 
-const getDuration = (duration: number) => {
-  const min = Math.round(duration / 60);
-  if (min < 1) return '1분 미만';
-  return `${min}분`;
-};
 const RecommendationRoute = ({ route, isActive, onClick }: { route: Route; isActive: boolean; onClick(): void }) => {
   return (
     <div
       className={cn(
-        'bg-white rounded-lg p-4 drop-shadow-lg cursor-pointer select-none border border-solid border-1 aspect-[140/115]',
+        'bg-white rounded-lg p-4 drop-shadow-lg cursor-pointer select-none border border-solid border-[2px] aspect-[140/115]',
         {
-          'border-primary': isActive,
+          'border-main': isActive,
         }
       )}
       onClick={() => onClick()}
     >
       <div className="flex justify-between">
-        <div className={cn('text-sm', isActive ? 'text-primary' : '')}>
+        <div className={cn('text-sm', isActive ? 'text-main' : '')}>
           <span>{route.name}</span>
         </div>
         <div>
@@ -48,7 +44,7 @@ const RecommendationRoute = ({ route, isActive, onClick }: { route: Route; isAct
       <div className="h-1" />
       <div className="flex items-end">
         <div className="text-2xl">
-          <span>{getDuration(route.duration)}</span>
+          <span>{route.duration}</span>
         </div>
         <div className="w-2" />
         <div>
@@ -63,18 +59,21 @@ const RecommendationRoute = ({ route, isActive, onClick }: { route: Route; isAct
   );
 };
 
-export const RecommendationRouteList = ({ routes }: { routes: Route[] }) => {
+export const RecommendationRouteList = ({ routes, onClick }: { routes: Route[]; onClick(route: Route): void }) => {
   const [current, setCurrent] = useState(0);
   const { headerStatus } = useContext(LocationsContext);
   if (headerStatus !== 'route' || routes.length < 1) return <div></div>;
   return (
-    <div className="grid gap-4 grid-cols-3 w-max">
+    <div className="grid gap-3 grid-cols-3 w-max">
       {routes.map((route, idx) => (
         <RecommendationRoute
           route={route}
           key={JSON.stringify(route)}
           isActive={idx === current}
-          onClick={() => setCurrent(idx)}
+          onClick={() => {
+            setCurrent(idx);
+            onClick(route);
+          }}
         />
       ))}
     </div>

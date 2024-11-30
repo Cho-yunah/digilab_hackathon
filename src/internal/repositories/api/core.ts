@@ -9,11 +9,12 @@ export function createApi(base: string, options?: { headers: RequestOption['head
   const baseHeaders = options?.headers || {};
   async function request(endpoint: string, { body = undefined, headers = {}, params = {}, method }: RequestOption) {
     const baseQuery = new URLSearchParams(params);
-    const resp = await fetch(`${base}${endpoint}${baseQuery.size > 0 ? baseQuery.toString() : ''}`, {
+    const resp = await fetch(`${base}${endpoint}${baseQuery.size > 0 ? `?${baseQuery.toString()}` : ''}`, {
       method: method.toUpperCase(),
       headers: { ...baseHeaders, ...headers },
       body,
     });
+    
     if (!resp.ok) {
       console.error(await resp.text());
       throw Error('network error');
