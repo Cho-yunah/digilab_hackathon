@@ -3,7 +3,7 @@ import Levelbadge from '../badges/LevelBadge';
 import { LocationsContext } from '@/services/context';
 
 const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
-  const { setCurrentToDestination, setRoutePoints, setHeaderStatus } = useContext(LocationsContext);
+  const { setRoutePoints, setHeaderStatus, findRoute, } = useContext(LocationsContext);
   if (!data) return <></>;
   const locData = { title: data.title, lat: data.lat, lng: data.lon, address: data.address };
   return (
@@ -47,7 +47,7 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
               <button
                 className="h-[36px] w-[60px] rounded-full text-sm text-white bg-main"
                 onClick={() => {
-                  setCurrentToDestination(locData);
+                  findRoute(locData);
                   onClose();
                 }}
               >

@@ -13,7 +13,7 @@ type LocationPoint = {
 };
 
 const SearchRoute = ({ start, end }: { start: LocationPoint | null; end: LocationPoint | null }) => {
-  const { setIsRouteSearchMode } = useContext(LocationsContext);
+  const { setIsRouteSearchMode, setHeaderStatus, setRoutes } = useContext(LocationsContext);
   return (
     <>
       <div className="flex bg-white w-full p-4">
@@ -48,7 +48,11 @@ const SearchRoute = ({ start, end }: { start: LocationPoint | null; end: Locatio
         </div>
         <div className="w-2" />
         <div className="w-6">
-          <img src={closeIcon} alt="close" className="w-[24px] h-[24px]" />
+          <img src={closeIcon} alt="close" className="w-[24px] h-[24px] cursor-pointer" onClick={() => {
+            setHeaderStatus('map');
+            setIsRouteSearchMode(false);
+            setRoutes([]);
+          }} />
         </div>
       </div>
     </>
