@@ -1,14 +1,5 @@
 import * as React from 'react';
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export function Selector() {
   return (
@@ -19,8 +10,7 @@ export function Selector() {
       <SelectContent>
         <SelectGroup>
           <SelectItem value="location">거리순</SelectItem>
-          <SelectItem value="banana">편의순</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
+          <SelectItem value="convinence">편의순</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
