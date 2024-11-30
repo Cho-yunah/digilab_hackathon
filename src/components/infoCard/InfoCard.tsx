@@ -1,16 +1,25 @@
 import { useContext } from 'react';
 import Levelbadge from '../badges/LevelBadge';
 import { LocationsContext } from '@/services/context';
+import { useNavigate } from 'react-router-dom';
 
 const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
   const { setCurrentToDestination, setRoutePoints, setHeaderStatus } = useContext(LocationsContext);
+  const navigate = useNavigate();
+
   if (!data) return <></>;
   const locData = { title: data.title, lat: data.lat, lng: data.lon, address: data.address };
+
+  const handleClickCard = () => {
+    navigate(`/${data.id}`, {
+      state: { ...data },
+    });
+  };
   return (
-    <div className="relative w-full bottom-5 flex justify-center rounded-xl">
+    <div onClick={handleClickCard} className="relative w-full bottom-5 flex justify-center rounded-xl">
       <div className="w-96 rounded-xl bg-white z-30 shadow-lg overflow-hidden">
         <div
-          onClick={onClose}
+          onClick={(e) => (e.stopPropagation(), onClose())}
           className="absolute z-40 p-1 size-[36px] right-10 top-2 bg-white shadow-md rounded-full text-xl text-center cursor-pointer select-none"
         >
           ✕
@@ -36,7 +45,8 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
             <div className="flex gap-2 items-center">
               <button
                 className="h-[36px] w-[60px] rounded-full border-[1px] text-sm border-main text-main"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setRoutePoints([locData, null]);
                   setHeaderStatus('route');
                   onClose();
@@ -46,7 +56,8 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
               </button>
               <button
                 className="h-[36px] w-[60px] rounded-full text-sm text-white bg-main"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setCurrentToDestination(locData);
                   onClose();
                 }}
