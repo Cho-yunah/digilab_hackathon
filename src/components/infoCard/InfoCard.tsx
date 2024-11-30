@@ -1,6 +1,9 @@
 import { useContext } from 'react';
 import LevelBadge from '../badges/LevelBadge';
 import { LocationsContext } from '@/services/context';
+
+import { useNavigate } from 'react-router-dom';
+
 import ic_lift from '@/assets/svg/ic_lift.svg';
 import ic_parking from '@/assets/svg/ic_parkinglot.svg';
 import ic_table from '@/assets/svg/ic_table.svg';
@@ -8,6 +11,10 @@ import ic_toilet from '@/assets/svg/ic_toilet.svg';
 import degree_high from '@/assets/svg/degree_high.svg';
 import degree_low from '@/assets/svg/degree_low.svg';
 import degree_mid from '@/assets/svg/degree_middle.svg';
+
+const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
+  const { setCurrentToDestination, setRoutePoints, setHeaderStatus } = useContext(LocationsContext);
+  const navigate = useNavigate();
 
 interface IconBoxProps {
   degree: string;
@@ -57,11 +64,17 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
   const [parking, bathroom, elevator, table] = [data['주차장'], data['화장실'], data['승강기'], data['테이블']];
   // console.log(parking, bathroom, elevator, table);
   const locData = { title: data.title, lat: data.lat, lng: data.lon, address: data.address };
+
+  const handleClickCard = () => {
+    navigate(`/${data.id}`, {
+      state: { ...data },
+    });
+  };
   return (
-    <div className="relative w-full bottom-5 flex justify-center rounded-xl">
+    <div onClick={handleClickCard} className="relative w-full bottom-5 flex justify-center rounded-xl">
       <div className="w-96 rounded-xl bg-white z-30 shadow-lg overflow-hidden">
         <div
-          onClick={onClose}
+          onClick={(e) => (e.stopPropagation(), onClose())}
           className="absolute z-40 p-1 size-[36px] right-10 top-2 bg-white shadow-md rounded-full text-xl text-center cursor-pointer select-none"
         >
           ✕
@@ -86,8 +99,10 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
             <IconBox {...{ degree, parking, bathroom, elevator, table }} />
             <div className="flex gap-2 items-center">
               <button
-                className="h-[36px] w-[60px] rounded-full border-[1px] text-sm border-[#7A28FF] bg-white text-main"
-                onClick={() => {
+
+                className="h-[36px] w-[60px] rounded-full border-[1px] text-sm border-main text-main"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setRoutePoints([locData, null]);
                   setHeaderStatus('route');
                   onClose();
@@ -97,7 +112,11 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
               </button>
               <button
                 className="h-[36px] w-[60px] rounded-full text-sm text-white bg-main"
-                onClick={() => {
+
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentToDestination(locData);
+
                   findRoute(locData);
                   onClose();
                 }}
