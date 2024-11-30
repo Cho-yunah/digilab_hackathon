@@ -2,14 +2,14 @@ import React from 'react';
 
 export const LevelbadgeString: { [key: string]: string } = {
   difficult: '접근 어려움',
-  normal: '접근 일반',
+  normal: '접근 보통',
   easy: '접근 쉬움',
 };
 
 const BadgeStyles: { [key: string]: { textColor: string; bgColor: string } } = {
-  difficult: { textColor: 'text-red-500', bgColor: 'bg-red-100' },
-  normal: { textColor: 'text-blue-500', bgColor: 'bg-blue-100' },
-  easy: { textColor: 'text-orange-500', bgColor: 'bg-orange-100' },
+  difficult: { textColor: 'text-[#F22A2A]', bgColor: 'bg-[#FFE0E0]' },
+  normal: { textColor: 'text-[#F07400]', bgColor: 'bg-[#FFE6C4]' },
+  easy: { textColor: 'text-[#00AE3A]', bgColor: 'bg-[#E4FFED]' },
 };
 
 const LevelBadge = (level: { level: string }) => {

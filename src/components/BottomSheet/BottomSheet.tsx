@@ -5,6 +5,7 @@ import './BottomSheet.css'; // 스타일은 아래에 추가
 import Selector from '../select/Select';
 import { SearchResultCard, SearchResultCardList, Site } from '../searchBar/SearchResultCard';
 import { LocationsContext } from '@/services/context';
+import { useNavigate } from 'react-router-dom';
 
 const minY = 0;
 
@@ -15,6 +16,7 @@ interface BottomSheetProps {
 
 const BottomSheet: React.FC<BottomSheetProps> = () => {
   const sheetRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const { sites, headerStatus } = useContext(LocationsContext);
 
   const [style, api] = useSpring(() => ({
@@ -62,7 +64,10 @@ const BottomSheet: React.FC<BottomSheetProps> = () => {
               key={JSON.stringify(site)}
               data={site}
               onClick={() => {
-                alert('페이지 이동');
+                // alert('페이지 이동');
+                navigate(`/${site.id}`, {
+                  state: { ...site },
+                });
               }}
             />
           ))}

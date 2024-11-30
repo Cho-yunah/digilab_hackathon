@@ -10,12 +10,12 @@ export enum CATEGORY {
 
 const DetailIntroInfo = ({ state }: any) => {
   console.log(state);
-  const { thumbnails, title, cat } = state;
+  const { thumb, title, cat } = state;
   const category = CATEGORY[cat as keyof typeof CATEGORY];
   return (
     <>
       <div className="w-full bg-violet-200 h-[200px] overflow-hidden object-fit">
-        <img src={thumbnails} alt="info-card" />
+        <img src={thumb} alt="info-card" />
       </div>
       <div className="flex flex-col p-4">
         <h1 className="text-2xl font-semibold">{title}</h1>
