@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '@assets/svg/digilab.svg';
+import logo from '@/assets/svg/digilab.svg';
 
 const SearchBar = () => {
   return (

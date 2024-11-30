@@ -1,6 +1,6 @@
-import TablerBedIcon from '@assets/icons/tabler_bed.svg';
-import BowlSpoonIcon from '@assets/icons/tabler_bowl-spoon.svg';
-import BankBuildingIcon from '@assets/icons/tabler_building-bank.svg';
+import TablerBedIcon from '@/assets/icons/tabler_bed.svg';
+import BowlSpoonIcon from '@/assets/icons/tabler_bowl-spoon.svg';
+import BankBuildingIcon from '@/assets/icons/tabler_building-bank.svg';
 
 // 1. 필터 타입을 enum으로 정의
 export enum FilterType {

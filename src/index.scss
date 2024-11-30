@@ -1,5 +1,5 @@
-@import './styles/reset';
-@import './styles/variables';
+@use './styles/reset';
+@use './styles/variables';
 
 @tailwind base;
 @tailwind components;
@@ -143,5 +143,14 @@ button:focus-visible {
 }
 
 .bg-main {
-  background-color: $primary-color;
+  background-color: #7a28ff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

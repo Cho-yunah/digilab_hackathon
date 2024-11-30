@@ -16,16 +16,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": "./src", // 절대 경로 설정
+    // "baseUrl": "./src", // 절대 경로 설정
+    // "paths": {
+    //   "@layouts": ["layouts"],
+    //   "@pages": ["pages"],
+    //   "@components/*": ["components/*"],
+    //   "@config/*": ["config/*"],
+    //   "@hooks/*": ["hooks/*"],
+    //   "@styles/*": ["styles/*"],
+    //   "@utils/*": ["utils/*"],
+    //   "@assets/*": ["assets/*"]
+    // }
+    "baseUrl": ".",
     "paths": {
-      "@layouts": ["layouts"],
-      "@pages": ["pages"],
-      "@components/*": ["components/*"],
-      "@config/*": ["config/*"],
-      "@hooks/*": ["hooks/*"],
-      "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"],
-      "@assets/*": ["assets/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

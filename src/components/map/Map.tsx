@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import markerIcon from '@assets/svg/marker.svg';
+import markerIcon from '@/assets/svg/marker.svg';
 
 interface StaticMapProps {
   width?: number;
