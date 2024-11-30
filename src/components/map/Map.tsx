@@ -1,14 +1,17 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import markerIcon from '@/assets/svg/marker.svg';
 import { getOrsDummy } from '../../internal/repositories/dummy/RouteRepository';
-import SearchRoute from '../searchBar/SearchRoute';
 import { RecommendationRouteList } from '../searchBar/RecommendationRouteList';
 import { getWheelchairRoutes } from '@/internal/repositories/api/OrsRepository';
-
+import BottomSheet from '../BottomSheet/BottomSheet';
+import { LocationsContext } from '@/services/context';
+import { MapHeader } from './MapHeader';
+import InfoCard from '../infoCard/InfoCard';
+import { cn } from '@/lib/utils';
 
 declare global {
   interface Window {
-    naver: any;
+    naver: typeof naver;
   }
 }
 
@@ -18,52 +21,29 @@ interface StaticMapProps {
   level?: number;
 }
 
-async function loadCurrentGeoLocation(): Promise<GeolocationPosition> {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      function (e) {
-        resolve(e);
-      },
-      function (e) {
-        reject(e);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 60 * 60 * 1000,
-        maximumAge: 0,
-      }
-    );
-  });
-}
-
 const createLocationPoint = (title: string, address: string, lat: number, lng: number) => {
   return {
     title,
     address,
     lat,
     lng,
-  }
-}
+  };
+};
 
-export const Map: React.FC<StaticMapProps> = ({ width = 440, level = 16 }) => {
+export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   const API_KEY = process.env.VITE_NAVER_MAP_CLIENT_ID;
   const mapSrc = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${API_KEY}&callback=initMap`;
   const [map, setMap] = useState<any>(null);
-  const [markers, setMarkers] = useState<any[]>([]);
-  const [currentPosition, setCurrentPosition] = useState<GeolocationCoordinates>();
-  
+  const [currentLoc, setCurrentLoc] = useState<any>(null);
+
   // 경로 탐색 지점 선택
   const [routePoints, setRoutePoints] = useState<[any, any]>([null, null]);
-  const [routes, setRoutes] = useState<any[]>([]);
 
+  const { locations, setMarkers } = useContext(LocationsContext);
 
-  useEffect(() => {
-    if (map && currentPosition) {
-      const { LatLng } = window.naver.maps;
-      map.setCenter(new LatLng(currentPosition.latitude, currentPosition.longitude));
-      console.log('set center');
-    }
-  }, [currentPosition, map])
+  const showCard = (loc: any) => {
+    setCurrentLoc(loc);
+  }
 
   useLayoutEffect(() => {
     const script = document.createElement('script');
@@ -73,7 +53,7 @@ export const Map: React.FC<StaticMapProps> = ({ width = 440, level = 16 }) => {
 
     script.onload = () => {
       const { naver } = window;
-      const { LatLng, Polyline, Map, Size, Marker } = naver.maps;
+      const { LatLng, Polyline, Map } = naver.maps;
       const map = new Map('map', {
         center: new LatLng(33.4498632234159, 126.918168422686),
         zoom: level,
@@ -124,9 +104,6 @@ export const Map: React.FC<StaticMapProps> = ({ width = 440, level = 16 }) => {
         strokeWeight: 12,
         strokeLineCap: 'round',
       });
-
-      // 지도 클릭 이벤트
-      
     };
 
     return () => {
@@ -135,21 +112,50 @@ export const Map: React.FC<StaticMapProps> = ({ width = 440, level = 16 }) => {
   }, []);
 
   useEffect(() => {
-    console.log(routePoints);
+    if (map && locations.length > 0) {
+      const { Marker, Size, Event } = naver.maps;
+      const newMarkers = locations.slice(0, 10).map((loc: any) => {
+        const m = new Marker({
+          map,
+          position: new naver.maps.LatLng(loc.lat, loc.lon),
+          icon: { url: markerIcon, size: new Size(28, 28), scaledSize: new Size(28, 28) },
+          title: loc.title,
+        });
+        Event.addListener(m, 'click', function (e) {
+          map.setCenter(e.coord);
+          showCard(loc);
+        })
+        return m;
+      });
+      console.log(newMarkers);
+      setMarkers((prev: any[]) => {
+        prev.forEach((p: any) => p.setMap(null));
+        return newMarkers;
+      });
+    }
+  }, [locations]);
+
+  useEffect(() => {
     if (!routePoints[0] || !routePoints[1]) return;
-    getWheelchairRoutes(`${routePoints[0].lat},${routePoints[0].lng}`, `${routePoints[1].lat},${routePoints[1].lng}`).then((res) => {
+    getWheelchairRoutes(
+      `${routePoints[0].lat},${routePoints[0].lng}`,
+      `${routePoints[1].lat},${routePoints[1].lng}`
+    ).then((res) => {
       console.log(res);
     });
   }, [routePoints]);
 
   useEffect(() => {
     if (!map) return;
-    const { Size, Marker } = window.naver.maps;
+    const { Size, Marker } = naver.maps;
     naver.maps.Event.addListener(map, 'click', function (e: any) {
       console.log('지도 클릭:', e.coord, e.overlay);
     });
+    naver.maps.Event.addListener(map, 'dragend', function (e) {
+      setCurrentLoc(null);
+    })
     naver.maps.Event.addListener(map, 'rightclick', function (e: any) {
-      console.log('지도 우클릭:', e.coord.x, e.coord.y, e.overlay);
+      console.log('지도 우클릭:', e.coord.x, e.coosrd.y, e.overlay);
       const marker = new Marker({
         map,
         position: e.coord,
@@ -164,24 +170,22 @@ export const Map: React.FC<StaticMapProps> = ({ width = 440, level = 16 }) => {
         if (!end) return [start, createLocationPoint('end point', '', e.coord.lat(), e.coord.lng())];
         if (start && end) return [null, null];
         return [start, end];
-      })
+      });
     });
-  }, [map])
+  }, [map]);
 
-  useEffect(() => {
-    loadCurrentGeoLocation().then((pos) => {
-      setCurrentPosition(pos.coords);
-    });
-  }, []);
 
   return (
     <div className="relative">
-      <div id="map" style={{ width, height: '100vh', overflow: 'hidden', borderRadius: '10px' }} />
-      {/* <div className='absolute m-2'>
-        <SearchBar />
-      </div> */}
-      <div className="absolute top-0 left-0 w-full">
-        <SearchRoute start={routePoints[0]} end={routePoints[1]} />
+      <div id="map" style={{ width: '100%', height: '100vh', overflow: 'hidden', borderRadius: '10px' }} />
+      <MapHeader />
+      <div>
+        {/* 플로팅 액션 버튼 */}
+      </div>
+      <BottomSheet />
+
+      <div className={cn('absolute bottom-0 left-0 w-full p-4', {'hidden': !currentLoc})}>
+        <InfoCard data={currentLoc} onClose={() => setCurrentLoc(null)}  />
       </div>
       <div className="absolute bottom-0 left-0 w-full p-4 overflow-x-auto">
         <RecommendationRouteList

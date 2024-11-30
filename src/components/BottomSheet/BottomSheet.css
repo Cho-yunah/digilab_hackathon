@@ -15,6 +15,7 @@
     padding: 10px;
     text-align: center;
     cursor: grab;
+    touch-action: none;
   }
   
   .bottom-sheet-header:active {

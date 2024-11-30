@@ -1,5 +1,3 @@
-import React from 'react';
-
 const StaticHeader = ({ title }: { title: string }) => {
   return (
     <div className="w-full h-[56px] border-b-[1px]">

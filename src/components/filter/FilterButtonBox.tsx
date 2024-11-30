@@ -10,7 +10,7 @@ const FilterButtonBox: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-wrap absolute top-[5rem] mx-[1.2rem]">
+    <div className="flex flex-wrap mt-2">
       {Object.values(FilterType).map((filter) => (
         <IconButton
           key={filter}
