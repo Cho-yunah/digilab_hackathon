@@ -20,11 +20,6 @@ const iconMap: Record<FilterType, string> = {
 
 // 3. 아이콘을 반환하는 함수
 export const getIcon = (filterType: FilterType): string => {
-  console.log(iconMap[filterType]);
   return iconMap[filterType];
 };
 
-// 사용 예제
-const filterType: FilterType = FilterType.Restaurant;
-const iconPath = getIcon(filterType);
-console.log(iconPath); // '/icons/restaurant.png'

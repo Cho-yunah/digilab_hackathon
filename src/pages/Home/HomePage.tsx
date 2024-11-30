@@ -11,7 +11,6 @@ const HomePage = () => {
   return (
     <div className="relative">
       <Map />
-      <SearchBar />
       <FilterButtonBox />
       <InfoCard />
       <button onClick={openDrawer}>Open Drawer</button>
