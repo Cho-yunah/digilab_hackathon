@@ -51,7 +51,7 @@ const IconBox = ({ degree, parking, bathroom, elevator, table }: IconBoxProps) =
 };
 
 const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
-  const { setCurrentToDestination, setRoutePoints, setHeaderStatus, findRoute } = useContext(LocationsContext);
+  const { setRoutePoints, setHeaderStatus, findRoute } = useContext(LocationsContext);
   const navigate = useNavigate();
   if (!data) return <></>;
   console.log(data);
