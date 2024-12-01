@@ -14,7 +14,7 @@ const DetailAccessInfo = ({ state }: any) => {
 
   const access = state.접근성;
 
-  const AccessInfo = ({ access }: any) => {
+  const AccessInfo = () => {
     switch (state.접근성) {
       case '중':
         return <p className="text-base">일부 접근성 조건이 충족되어 있으나,이용에 약간의 불편함이 있을 수 있습니다.</p>;
@@ -23,6 +23,7 @@ const DetailAccessInfo = ({ state }: any) => {
       case '하':
         return <p className="text-base">공간 접근성 조건을 대부분 충족하여, 편리하게 이용할 수 있습니다.</p>;
     }
+    return <></>
   };
 
   return (
@@ -36,7 +37,7 @@ const DetailAccessInfo = ({ state }: any) => {
             width="78px"
           />
           <div className="scrollx-auto  overflow-hidden">
-            <AccessInfo access={access} />
+            <AccessInfo />
             {/* <p className="text-xs whitespace-prewrap">
             </p> */}
           </div>
