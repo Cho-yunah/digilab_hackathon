@@ -12,7 +12,6 @@ const DetailAccessInfo = ({ state }: any) => {
     navigate('/:id/facility');
   };
 
-  const { description } = state;
   const access = state.접근성;
 
   const AccessInfo = ({ access }: any) => {
