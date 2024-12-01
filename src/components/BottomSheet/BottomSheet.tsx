@@ -6,6 +6,8 @@ import Selector from '../select/Select';
 import { SearchResultCard, SearchResultCardList } from '../searchBar/SearchResultCard';
 import { LocationsContext } from '@/services/context';
 import { useNavigate } from 'react-router-dom';
+import FilterButtonBox from '../filter/FilterButtonBox';
+import filter_icon from '@/assets/svg/filter_icon.svg';
 
 const minY = 0;
 
@@ -58,6 +60,13 @@ const BottomSheet: React.FC<BottomSheetProps> = () => {
       </div>
       <div className="bottom-sheet-content">
         <Selector />
+        <div className="flex">
+          <div className="flex items-center gap-2 border-r border-gray-300 pr-4">
+            <img src={filter_icon} alt="filterIcon" className="w-5 h-5" />
+            <span className="text-sm text-gray-600">필터</span>
+          </div>
+          <FilterButtonBox />
+        </div>
         <SearchResultCardList>
           {sites.map((site: any) => (
             <SearchResultCard

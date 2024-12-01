@@ -10,16 +10,18 @@ const FilterButtonBox: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-wrap mt-2">
-      {Object.values(FilterType).map((filter) => (
-        <IconButton
-          key={filter}
-          filter={filter}
-          isSelected={selectedFilter === filter}
-          onClick={handleFilterClick}
-          getIcon={getFilterIcon}
-        />
-      ))}
+    <div className="flex-1 overflow-x-auto">
+      <div className="flex items-center gap-1 w-max px-1">
+        {Object.values(FilterType).map((filter) => (
+          <IconButton
+            key={filter}
+            filter={filter}
+            isSelected={selectedFilter === filter}
+            onClick={handleFilterClick}
+            getIcon={getFilterIcon}
+          />
+        ))}
+      </div>
     </div>
   );
 };

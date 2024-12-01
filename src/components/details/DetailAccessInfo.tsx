@@ -6,44 +6,6 @@ import degree from '@/assets/svg/degree_middle.svg';
 import ic_parking from '@/assets/svg/ic_parkinglot.svg';
 import ic_toilet from '@/assets/svg/ic_toilet.svg';
 
-// const AccessInfo = ({ state }) => {
-//   return (
-//     <div className="grid grid-cols-2 gap-4">
-//       {/* 주차장 */}
-//       {state['주차장'] === '1' && (
-//         <div className="flex items-center gap-3 text-base text-[#171719]">
-//           <img src="signal_diff" alt="장애인 주차장" className="w-6 h-6" />
-//           <p>장애인 주차장</p>
-//         </div>
-//       )}
-
-//       {/* 화장실 */}
-//       {state['화장실'] === '1' && (
-//         <div className="flex items-center gap-3 text-base text-[#171719]">
-//           <img src="signal_normal" alt="장애인 화장실" className="w-6 h-6" />
-//           <p>장애인 화장실</p>
-//         </div>
-//       )}
-
-//       {/* 승강기 */}
-//       {state['승강기'] === '1' && (
-//         <div className="flex items-center gap-3 text-base text-[#171719]">
-//           <img src="signal_easy" alt="장애인 승강기" className="w-6 h-6" />
-//           <p>장애인 승강기</p>
-//         </div>
-//       )}
-
-//       {/* 테이블 */}
-//       {state['테이블'] === '1' && (
-//         <div className="flex items-center gap-3 text-base text-[#171719]">
-//           <img src="signal_easy" alt="입식 테이블" className="w-6 h-6" />
-//           <p>입식 테이블</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
 const DetailAccessInfo = ({ state }: any) => {
   const navigate = useNavigate();
   const facilityButtonHandler = () => {
@@ -53,6 +15,17 @@ const DetailAccessInfo = ({ state }: any) => {
   const { description } = state;
   const access = state.접근성;
 
+  const AccessInfo = ({ access }: any) => {
+    switch (state.접근성) {
+      case '중':
+        return <p className="text-base">일부 접근성 조건이 충족되어 있으나,이용에 약간의 불편함이 있을 수 있습니다.</p>;
+      case '상':
+        return <p className="text-base">대부분의 접근성 조건이 미흡하여, 이용에 상당한 어려움이 있을 수 있습니다.</p>;
+      case '하':
+        return <p className="text-base">공간 접근성 조건을 대부분 충족하여, 편리하게 이용할 수 있습니다.</p>;
+    }
+  };
+
   return (
     <>
       <div className="p-4">
@@ -61,10 +34,12 @@ const DetailAccessInfo = ({ state }: any) => {
           <img
             src={access == '중' ? signal_normal : access == '상' ? signal_diff : signal_easy}
             alt="info-card"
-            width="70px"
+            width="78px"
           />
           <div className="scrollx-auto  overflow-hidden">
-            <p className="text-xs whitespace-prewrap">{description}</p>
+            <AccessInfo access={access} />
+            {/* <p className="text-xs whitespace-prewrap">
+            </p> */}
           </div>
         </div>
         <div className="px-1 py-3">
