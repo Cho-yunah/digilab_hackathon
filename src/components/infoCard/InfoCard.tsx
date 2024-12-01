@@ -110,8 +110,6 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
                 className="h-[36px] w-[60px] rounded-full text-sm text-white bg-main"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setCurrentToDestination(locData);
-
                   findRoute(locData);
                   onClose();
                 }}

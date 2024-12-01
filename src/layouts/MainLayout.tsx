@@ -70,6 +70,7 @@ const MainLayout = () => {
   const findRoute = useCallback(async (locData: any) => {
     
     let start = routePoints[0];
+    console.log('start', start );
     if (!start) {
       const geo = await loadCurrentGeoLocation();
       start = {
@@ -118,7 +119,7 @@ const MainLayout = () => {
       });
     }
     setHeaderStatus('route');
-  }, [setCurrentToDestination]);
+  }, [setCurrentToDestination, routePoints]);
   
 
   useLayoutEffect(() => {

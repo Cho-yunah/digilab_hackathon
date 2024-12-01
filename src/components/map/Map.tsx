@@ -189,6 +189,12 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   }, [locations]);
 
   useEffect(() => {
+    if (routes.length > 0) {
+      selectRoute(routes[0]);
+    }
+  }, [routes]);
+
+  useEffect(() => {
     if (!map) return;
     const { Size, Marker } = naver.maps;
     naver.maps.Event.addListener(map, 'click', function (e: any) {
