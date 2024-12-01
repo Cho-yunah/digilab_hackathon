@@ -42,7 +42,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
   const [polyLines, setPolyLines] = useState<any[]>([]);
   const [_, setRouteMakrers] = useState<any[]>([]);
 
-  const { locations, setMarkers, headerStatus, isRouteSearchMode, routes, loadCurrentData } = useContext(LocationsContext);
+  const { locations, setMarkers, headerStatus, isRouteSearchMode, routes } = useContext(LocationsContext);
 
   const showCard = (loc: any) => {
     setCurrentLoc(loc);
@@ -194,7 +194,7 @@ export const Map: React.FC<StaticMapProps> = ({ level = 16 }) => {
     naver.maps.Event.addListener(map, 'click', function (e: any) {
       console.log('지도 클릭:', e.coord, e.overlay);
     });
-    naver.maps.Event.addListener(map, 'dragend', function (e: any) {
+    naver.maps.Event.addListener(map, 'dragend', function () {
       // loadCurrentData(e.coord);
       setCurrentLoc(null);
     });

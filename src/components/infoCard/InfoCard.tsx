@@ -12,7 +12,6 @@ import degree_high from '@/assets/svg/degree_high.svg';
 import degree_low from '@/assets/svg/degree_low.svg';
 import degree_mid from '@/assets/svg/degree_middle.svg';
 
-
 interface IconBoxProps {
   degree: string;
   parking: number;
@@ -52,7 +51,7 @@ const IconBox = ({ degree, parking, bathroom, elevator, table }: IconBoxProps) =
 };
 
 const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
-  const { setCurrentToDestination, setRoutePoints, setHeaderStatus,findRoute } = useContext(LocationsContext);
+  const { setCurrentToDestination, setRoutePoints, setHeaderStatus, findRoute } = useContext(LocationsContext);
   const navigate = useNavigate();
   if (!data) return <></>;
   console.log(data);
@@ -88,7 +87,7 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
             <h2 className="text-lg font-semibold ">{data.title}</h2>
             <p className="text-sm text-[#7C7C7F] ml-2 font-semibold">{CATEGORY[data.cat]}</p>
           </div>
-          <div className=" gap-1 items-center">
+          <div className="gap-1 items-center">
             <p className="text-xs text-[#7C7C7F]">{data.address}</p>
 
             {/* <p className="text-xs text-[#7C7C7F]">{data.distance}m</p> */}
@@ -97,7 +96,6 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
             <IconBox {...{ degree, parking, bathroom, elevator, table }} />
             <div className="flex gap-2 items-center">
               <button
-
                 className="h-[36px] w-[60px] rounded-full border-[1px] text-sm border-main text-main"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -110,7 +108,6 @@ const InfoCard = ({ data, onClose }: { data: any; onClose(): void }) => {
               </button>
               <button
                 className="h-[36px] w-[60px] rounded-full text-sm text-white bg-main"
-
                 onClick={(e) => {
                   e.stopPropagation();
                   setCurrentToDestination(locData);
