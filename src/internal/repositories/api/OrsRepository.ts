@@ -1,6 +1,6 @@
 import { createApi } from './core';
 
-const API_BASE = 'http://15.165.222.159:8001/api';
+const API_BASE = 'https://a2ed-59-8-75-201.ngrok-free.app/api';
 
 const api = createApi(API_BASE);
 
